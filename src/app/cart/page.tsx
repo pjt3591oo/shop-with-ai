@@ -1,94 +1,100 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
-import { cn } from "@/shared/lib/utils";
+import { CartItem, CartSummary } from "@/features/cart";
+
+// Mock cart data
+const initialCartItems = [
+  {
+    id: "1",
+    name: "Basic Tee",
+    price: 35.00,
+    quantity: 1,
+    imageUrl: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+  },
+  {
+    id: "2",
+    name: "Nomad Tumbler",
+    price: 42.00,
+    quantity: 2,
+    imageUrl: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+  },
+  {
+    id: "3",
+    name: "Throwback Hip Bag",
+    price: 32.00,
+    quantity: 1,
+    imageUrl: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-03.jpg",
+  },
+];
 
 export default function CartPage() {
+  const [cartItems, setCartItems] = useState(initialCartItems);
+
+  const handleUpdateQuantity = (id: string, quantity: number) => {
+    setCartItems(items => 
+      items.map(item => item.id === id ? { ...item, quantity } : item)
+    );
+  };
+
+  const handleRemoveItem = (id: string) => {
+    setCartItems(items => items.filter(item => item.id !== id));
+  };
+
+  // Calculate totals
+  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shipping = 5.00;
+  const tax = subtotal * 0.05;
+  const total = subtotal + shipping + tax;
+
   return (
     <div className="bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-16 sm:px-6 sm:py-24">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Shopping Cart</h1>
-
-        <div className="mt-12">
-          {/* Empty cart state */}
-          <div className="rounded-lg bg-white p-8 shadow-sm border border-gray-100">
-            <div className="text-center">
-              <div className="mx-auto h-24 w-24 text-gray-400">
-                <svg
-                  className="h-full w-full"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">Your cart is empty</h3>
-              <p className="mt-1 text-sm text-gray-500">
-                Start adding items to your cart to see them here.
-              </p>
-              <div className="mt-6">
+      <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
+        
+        <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          {/* Cart items */}
+          <div className="lg:col-span-7">
+            {cartItems.length > 0 ? (
+              <ul className="divide-y divide-gray-200 border-b border-t border-gray-200">
+                {cartItems.map((item) => (
+                  <li key={item.id}>
+                    <CartItem 
+                      id={item.id}
+                      name={item.name}
+                      price={item.price}
+                      quantity={item.quantity}
+                      imageUrl={item.imageUrl}
+                      onRemove={handleRemoveItem}
+                      onUpdateQuantity={handleUpdateQuantity}
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="py-12 text-center">
+                <p className="text-gray-500 mb-4">Your cart is empty</p>
                 <Link
                   href="/products"
-                  className={cn(
-                    "inline-flex items-center rounded-md px-4 py-2.5 text-sm font-medium shadow-sm transition-colors",
-                    "bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-                  )}
+                  className="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
                 >
-                  Browse Products
+                  Continue Shopping
                 </Link>
               </div>
-            </div>
+            )}
           </div>
 
-          {/* Cart summary */}
-          <div className="mt-8 rounded-lg bg-gray-50 px-6 py-6">
-            <h2 className="text-lg font-medium text-gray-900">
-              Order summary
-            </h2>
-
-            <dl className="mt-6 space-y-4">
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Subtotal</dt>
-                <dd className="text-sm font-medium text-gray-900">$0.00</dd>
-              </div>
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Shipping</dt>
-                <dd className="text-sm font-medium text-gray-900">--</dd>
-              </div>
-              <div className="flex items-center justify-between">
-                <dt className="text-sm text-gray-600">Tax</dt>
-                <dd className="text-sm font-medium text-gray-900">--</dd>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                <dt className="text-base font-medium text-gray-900">Order total</dt>
-                <dd className="text-base font-medium text-gray-900">$0.00</dd>
-              </div>
-            </dl>
-
-            <div className="mt-6">
-              <button
-                type="submit"
-                disabled
-                className={cn(
-                  "w-full rounded-md px-4 py-3 text-base font-medium shadow-sm transition-colors",
-                  "bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
-                  "disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400"
-                )}
-              >
-                Checkout
-              </button>
-            </div>
-          </div>
-          
-          <div className="mt-8 text-center">
-            <p className="text-sm text-gray-500">
-              Need help? <Link href="/contact" className="text-primary-600 hover:text-primary-700 font-medium">Contact us</Link> or check our <Link href="/faq" className="text-primary-600 hover:text-primary-700 font-medium">FAQ</Link>.
-            </p>
+          {/* Order summary */}
+          <div className="mt-16 lg:col-span-5 lg:mt-0">
+            {cartItems.length > 0 && (
+              <CartSummary 
+                subtotal={subtotal}
+                tax={tax}
+                shipping={shipping}
+                total={total}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { inter } from "./fonts";
 import "./globals.css";
 import { Header } from "@/widgets/Header";
 import { Footer } from "@/widgets/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "Shop - Your Online Shopping Destination",
-  description: "Discover the best products at the best prices",
+  title: "Online Shopping Mall",
+  description: "A full-featured online shopping mall",
 };
 
 export default function RootLayout({
@@ -19,9 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex min-h-screen flex-col">
+        <div className="min-h-screen flex flex-col">
           <Header />
-          <main className="flex-1 max-w-7xl w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <main className="flex-1 py-6 px-4 sm:px-6 lg:px-8 mx-auto container">
             {children}
           </main>
           <Footer />
