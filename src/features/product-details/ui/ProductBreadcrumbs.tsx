@@ -34,7 +34,7 @@ export function ProductBreadcrumbs({
         <li>
           <div className="flex items-center">
             <Link
-              href={`/category/${categorySlug}`}
+              href={`/categories/${categorySlug}`}
               className="mr-2 text-sm font-medium text-gray-900"
             >
               {categoryName}
