@@ -5,13 +5,14 @@ import Link from "next/link";
 import { getProductsByCategoryId } from "@/entities/product";
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
-  const category = await getCategoryBySlug(params.slug);
+  const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
   
   if (!category) {
     return {
@@ -27,7 +28,8 @@ export async function generateMetadata({ params }: CategoryPageProps) {
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
-  const category = await getCategoryBySlug(params.slug);
+    const { slug } = await params;
+  const category = await getCategoryBySlug(slug);
   
   if (!category) {
     notFound();

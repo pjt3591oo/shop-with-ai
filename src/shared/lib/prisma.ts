@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/generated/prisma';
+import { PrismaClient } from '../../../generated/prisma';
 
 
 // Add prisma to the global type
