@@ -6,9 +6,11 @@ import { NavBar } from './NavBar';
 import { MobileMenu } from './MobileMenu';
 import { ShoppingBag, Search, Menu, User } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { useCart } from '@/features/cart';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { itemCount } = useCart();
 
   return (
     <header className="bg-white shadow">
@@ -51,9 +53,11 @@ export function Header() {
                 aria-label="Shopping bag"
               >
                 <ShoppingBag className="h-5 w-5" />
-                <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-primary-600 rounded-full">
-                  0
-                </span>
+                {itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-primary-600 rounded-full">
+                    {itemCount}
+                  </span>
+                )}
               </Link>
             </div>
           </div>
@@ -67,9 +71,11 @@ export function Header() {
               aria-label="Shopping bag"
             >
               <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-primary-600 rounded-full">
-                0
-              </span>
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-primary-600 rounded-full">
+                  {itemCount}
+                </span>
+              )}
             </Link>
             
             <button

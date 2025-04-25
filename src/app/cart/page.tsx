@@ -1,50 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { CartItem, CartSummary } from "@/features/cart";
-
-// Mock cart data
-const initialCartItems = [
-  {
-    id: "1",
-    name: "Basic Tee",
-    price: 35.00,
-    quantity: 1,
-    imageUrl: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-  },
-  {
-    id: "2",
-    name: "Nomad Tumbler",
-    price: 42.00,
-    quantity: 2,
-    imageUrl: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-  },
-  {
-    id: "3",
-    name: "Throwback Hip Bag",
-    price: 32.00,
-    quantity: 1,
-    imageUrl: "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-03.jpg",
-  },
-];
+import { CartItem, CartSummary, useCart } from "@/features/cart";
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState(initialCartItems);
-
-  const handleUpdateQuantity = (id: string, quantity: number) => {
-    setCartItems(items => 
-      items.map(item => item.id === id ? { ...item, quantity } : item)
-    );
-  };
-
-  const handleRemoveItem = (id: string) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
-
-  // Calculate totals
-  const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 5.00;
+  const { items, removeItem, updateQuantity, subtotal } = useCart();
+  
+  // Calculate additional costs
+  const shipping = items.length > 0 ? 5.00 : 0;
   const tax = subtotal * 0.05;
   const total = subtotal + shipping + tax;
 
@@ -56,9 +19,9 @@ export default function CartPage() {
         <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
           {/* Cart items */}
           <div className="lg:col-span-7">
-            {cartItems.length > 0 ? (
+            {items.length > 0 ? (
               <ul className="divide-y divide-gray-200 border-b border-t border-gray-200">
-                {cartItems.map((item) => (
+                {items.map((item) => (
                   <li key={item.id}>
                     <CartItem 
                       id={item.id}
@@ -66,8 +29,8 @@ export default function CartPage() {
                       price={item.price}
                       quantity={item.quantity}
                       imageUrl={item.imageUrl}
-                      onRemove={handleRemoveItem}
-                      onUpdateQuantity={handleUpdateQuantity}
+                      onRemove={removeItem}
+                      onUpdateQuantity={updateQuantity}
                     />
                   </li>
                 ))}
@@ -87,7 +50,7 @@ export default function CartPage() {
 
           {/* Order summary */}
           <div className="mt-16 lg:col-span-5 lg:mt-0">
-            {cartItems.length > 0 && (
+            {items.length > 0 && (
               <CartSummary 
                 subtotal={subtotal}
                 tax={tax}

@@ -58,6 +58,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Add to cart form */}
             <AddToCartButton 
               productId={product.id} 
+              name={product.name}
+              price={product.price}
+              imageUrl={product.images.length > 0 ? product.images[0].url : undefined}
               isAvailable={product.isAvailable && product.inventory > 0} 
             />
           </div>
