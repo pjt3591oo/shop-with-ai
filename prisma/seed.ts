@@ -1,7 +1,12 @@
 import { PrismaClient } from '../generated/prisma';
 import { hash } from 'bcrypt';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const prisma = new PrismaClient();
+
+
 
 async function main() {
   // Clean the database

@@ -260,7 +260,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
+    "rootEnvPath": "../../../.env",
     "schemaEnvPath": "../../../.env"
   },
   "relativePath": "../../../prisma",
@@ -274,7 +274,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://postgres.avdmvuvwwppxixgnowbg:EBvu95ays22AS@aws-0-ap-northeast-2.pooler.supabase.com:5432/shop"
+        "value": "postgresql://postgres:postgres@localhost:5432/shop"
       }
     }
   },
