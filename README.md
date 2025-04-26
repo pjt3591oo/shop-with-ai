@@ -53,8 +53,7 @@ The project follows Feature-Sliced Design (FSD) architecture:
 3. Create a `.env` file in the root directory with the following content:
    ```
    DATABASE_URL="postgresql://postgres:postgres@localhost:5432/shop"
-   NEXTAUTH_SECRET="your-secret-key"
-   NEXTAUTH_URL="http://localhost:3000"
+   DIRECT_URL=="postgresql://postgres:postgres@localhost:5432/shop"
    ```
 
 4. Start the PostgreSQL database using Docker:
